@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement()) @unique
+  name      String    @db.VarChar(100)
+  username  String    @unique @db.VarChar(50)
+  password  String    @db.VarChar(100)
+  email     String    @unique @db.VarChar(50)
+  phone     String
+  website   String
+  address   Address?   @relation("UserToAddress", fields: [addressId], references: [id])
+  addressId Int      @unique
+  company   Company?   @relation("UserToCompany", fields: [companyId], references: [id])
+  companyId Int      @unique
+  posts     Post[]     @relation("PostsToUser")
+}
+
+model Address {
+  id       Int      @id @default(autoincrement()) @unique
+  street   String
+  suite    String
+  city     String
+  zipcode  String
+  lat      String
+  lng      String
+  user     User?     @relation("UserToAddress")
+}
+
+model Company {
+  id           Int      @id @default(autoincrement()) @unique
+  name         String
+  catchPhrase  String
+  bs           String
+  user        User?   @relation("UserToCompany")
+}
+
+model Post {
+  id     Int      @id @default(autoincrement()) @unique
+  title  String
+  body   String
+  userId Int
+  user   User?   @relation("PostsToUser", fields: [userId], references: [id])
+}
