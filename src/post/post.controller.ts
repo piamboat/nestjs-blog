@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, Query } from "@nestjs/common";
+import { Controller, Get, Post, Patch, Delete, Param, Body, Query, UseGuards } from "@nestjs/common";
 import { PostService } from "./post.service";
 import { Post as PostData } from "./post.model";
 import { CustomPostResponse } from "./post.interface";
+import { JwtAuthGuard } from "src/authentication/auth.guard";
 
 @Controller('api/v1/post')
+@UseGuards(JwtAuthGuard)
 export class PostController {
     constructor(private readonly postService: PostService) {}
     
