@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param } from "@nestjs/common"
+import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from "@nestjs/common"
 import { AddressService } from "./address.service";
 import { Address } from "./address.model";
 import { CustomAddressResponse } from "./address.interface";
+import { JwtAuthGuard } from "src/authentication/auth.guard";
 
 @Controller('api/v1/address')
+@UseGuards(JwtAuthGuard)
 export class AddressController {
     constructor(private readonly addressService: AddressService) {}
 
