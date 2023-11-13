@@ -26,7 +26,9 @@ export class AuthService {
         if(!validatePassword) throw new Error(`Invalid Password`);
 
         return {
-            token: this.jwtService.sign({username})
+            token: this.jwtService.sign({username}),
+            username: user.username,
+            userId: user.id
         }
     }
 
